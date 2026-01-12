@@ -1,105 +1,12 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SmoothBrain TTT — Home</title>
-  <meta name="description" content="Single-page site for smoothbrainttt.github.io" />
-  <meta name="theme-color" content="#0b69ff" />
-  <link rel="icon" href="/favicon.ico" />
-  <style>
-    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa7bf;--accent:#0b69ff;--glass:rgba(255,255,255,0.03);color-scheme:dark light}
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;line-height:1.45;-webkit-font-smoothing:antialiased}
-    body{background:linear-gradient(180deg,#f6f8fb,#eef2f8);color:#071025}
-    .site{min-height:100vh;display:flex;flex-direction:column}
-    header{backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.55));border-bottom:1px solid rgba(10,20,40,.04)}
-    .wrap{width:min(1100px,94%);margin:0 auto;padding:1rem 0;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;gap:.75rem;align-items:center}
-    .logo{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#6ec1ff);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:1rem}
-    nav a{color:inherit;text-decoration:none;margin-left:1rem;font-weight:600}
-    main{flex:1;display:flex;align-items:center;justify-content:center;padding:3.25rem 0}
-    .hero{width:min(920px,96%);background:rgba(255,255,255,.9);padding:2.25rem;border-radius:14px;box-shadow:0 10px 30px rgba(10,20,40,.06);display:grid;grid-template-columns:1fr 320px;gap:1.5rem}
-    .hero h1{margin:0;font-size:clamp(1.75rem,3.5vw,2.5rem);line-height:1.02;color:#0b1530}
-    .lead{margin-top:.75rem;color:#334155}
-    .cta{margin-top:1.25rem}
-    .btn{display:inline-block;background:var(--accent);color:white;padding:.6rem 1rem;border-radius:10px;text-decoration:none;font-weight:700}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.8));padding:1rem;border-radius:10px;border:1px solid rgba(10,20,40,.04)}
-    .meta{font-size:.95rem;color:#475569}
-    footer{padding:1rem 0;background:transparent;text-align:center;color:#64748b;font-size:.9rem}
-    @media (max-width:880px){
-      .hero{grid-template-columns:1fr;align-items:start}
-      nav a{margin-left:.5rem}
-    }
-    @media (prefers-color-scheme:dark){
-      :root{--bg:#071025;--card:#0b1220;--muted:#9aa7bf}
-      body{background:linear-gradient(180deg,#061226,#041022);color:#e6eef9}
-      header{background:linear-gradient(180deg,rgba(3,6,11,.45),rgba(3,6,11,.4));border-bottom-color:rgba(255,255,255,.03)}
-      .hero{background:linear-gradient(180deg,rgba(8,12,20,.66),rgba(6,10,18,.6));box-shadow:0 8px 30px rgba(0,0,0,.6)}
-      .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.03)}
-      .logo{filter:brightness(.95)}
-    }
-  </style>
+<title>Page Title</title>
 </head>
 <body>
-  <div class="site">
-    <header>
-      <div class="wrap">
-        <div class="brand">
-          <div class="logo">SB</div>
-          <div>
-            <div style="font-weight:800">SmoothBrain TTT</div>
-            <div style="font-size:.85rem;color:var(--muted);margin-top:2px">A tiny single-page site</div>
-          </div>
-        </div>
-        <nav aria-label="Primary">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-        </nav>
-      </div>
-    </header>
 
-    <main id="home">
-      <section class="hero wrap" aria-labelledby="hero-title">
-        <div>
-          <h1 id="hero-title">Welcome — Test page turned single-page site</h1>
-          <p class="lead">This repository now hosts a simple, responsive one-page website. Use this as a starting point — edit the file <code>index.html</code> to change content.</p>
-          <div class="cta">
-            <a class="btn" href="#contact">Get in touch</a>
-          </div>
-          <div style="margin-top:1.25rem;font-size:.95rem;color:#475569">Built with plain HTML, CSS, zero dependencies. Hosted on GitHub Pages.</div>
-        </div>
-        <aside class="card" aria-labelledby="about">
-          <h3 id="about" style="margin:0 0 .35rem 0">About this site</h3>
-          <div class="meta">Single-file site: easy to edit, preview locally, and publish via GitHub Pages.</div>
+<h1>My First Heading</h1>
+<p>My first paragraph.</p>
 
-          <h4 style="margin-top:1rem;margin-bottom:.35rem">Quick tips</h4>
-          <ul style="margin:0 .25rem;color:#334155">
-            <li>Edit <code>index.html</code> and push changes to the <code>main</code> branch.</li>
-            <li>Preview locally by opening <code>index.html</code> in a browser or using a simple server (e.g., <code>python -m http.server</code>).</li>
-          </ul>
-        </aside>
-      </section>
-
-      <section id="contact" class="wrap" style="padding-top:1.5rem;padding-bottom:2rem">
-        <div style="width:100%;display:grid;grid-template-columns:1fr 320px;gap:1rem">
-          <div style="background:transparent;padding:1rem;border-radius:8px">
-            <h3 style="margin-top:0">Contact</h3>
-            <p class="meta">This is a demo contact area. Update this section with your preferred contact info or links.</p>
-          </div>
-          <div class="card">
-            <strong>Site</strong>
-            <div style="margin-top:.5rem;color:#475569">Hosted on GitHub Pages</div>
-            <div style="margin-top:.75rem"><a href="https://themrfailz.github.io/smoothbrainttt.github.io/" target="_blank" rel="noopener">Visit the live site</a></div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <div class="wrap">© 2026 SmoothBrain TTT — <a href="https://github.com/TheMrFailz/smoothbrainttt.github.io" target="_blank" rel="noopener">Repository</a></div>
-    </footer>
-  </div>
 </body>
 </html>
