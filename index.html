@@ -1,12 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Page Title</title>
+<meta charset="UTF-8" />
+<title>Smoothbrain TTT</title>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        overflow: hidden;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    svg {
+        width: 70vmin;
+        height: auto;
+    }
+
+    .brain-path {
+        fill: none;
+        stroke: #00ff66;
+        stroke-width: 3;
+        filter: drop-shadow(0 0 6px #00ff66)
+                drop-shadow(0 0 12px #00ff66);
+    }
+
+    .title {
+        margin-top: 30px;
+        font-size: 4rem;
+        font-family: "Comic Sans MS", "Comic Sans", cursive;
+        color: #00ff66;
+        text-shadow:
+            0 0 6px #00ff66,
+            0 0 12px #00ff66,
+            0 0 24px #00ff66;
+        letter-spacing: 0.15em;
+    }
+</style>
 </head>
 <body>
+<div class="container">
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+<svg viewBox="0 0 400 300">
+    <!-- Brain outline -->
+    <path class="brain-path" d="
+        M80,160
+        C40,140 40,80 90,70
+        C110,20 190,20 200,60
+        C230,20 310,30 320,80
+        C360,90 360,150 320,160
+        C330,200 300,230 260,220
+        C240,260 160,260 140,220
+        C100,240 70,210 80,160
+        Z
+    "/>
 
+    <!-- Left folds -->
+    <path class="brain-path" d="M110 90 C90 110 100 140 120 150"/>
+    <path class="brain-path" d="M120 70 C140 90 130 120 150 140"/>
+    <path class="brain-path" d="M100 130 C120 160 110 190 140 200"/>
+
+    <!-- Right folds -->
+    <path class="brain-path" d="M290 90 C310 110 300 140 280 150"/>
+    <path class="brain-path" d="M280 70 C260 90 270 120 250 140"/>
+    <path class="brain-path" d="M300 130 C280 160 290 190 260 200"/>
+
+    <!-- Center line -->
+    <path class="brain-path" d="M200 60 C190 110 190 170 200 220"/>
+</svg>
+
+<div class="title">Smoothbrain TTT</div>
+
+</div>
 </body>
 </html>
