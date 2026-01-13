@@ -256,27 +256,39 @@ html, body {
 </div>
 
 <script>
-/* ===== IMAGE URLS ===== */
+/* ===== IMAGE URLS (FULL POOL) ===== */
 const images = [
-    "https://i.imgur.com/rve5vKc.png",
-    "https://i.imgur.com/WqLy5dI.jpeg",
-    "https://i.imgur.com/BWnEg6m.png",
-    "https://i.imgur.com/y9PPuQ6.jpeg",
-    "https://i.imgur.com/9eSgzSZ.jpeg",
-    "https://i.imgur.com/DrmT0Cg.png",
-    "https://i.imgur.com/YCd989b.gif",
-    "https://i.imgur.com/vbz7YiE.png",
-    "https://i.imgur.com/VbStQpI.gif",
-    "https://i.imgur.com/41QK7Cr.gif",
-    "https://i.imgur.com/hRfZYv5.png",
-    "https://i.imgur.com/6WrOQMw.gif",
-	"https://i.imgur.com/hTgwnub.png",
+    "https://i.postimg.cc/52MNpcrK/generic-512.png",
+    "https://i.postimg.cc/wBjtc8yq/image.png",
+    "https://i.postimg.cc/jj3DMgPz/image.png",
+    "https://i.postimg.cc/HnXjsTK2/image.png",
+    "https://i.postimg.cc/4NvnDNp6/image.png",
+    "https://i.postimg.cc/y6cNRYQn/image.png",
+    "https://i.postimg.cc/mgJxV7hd/kojimaspin1.gif",
+    "https://i.postimg.cc/9wwL5rXh/image.png",
+    "https://i.postimg.cc/MHKrzGvf/shocked-shocked-cat.gif",
+    "https://i.postimg.cc/pLncW4XF/terrydavis-smile.gif",
+    "https://i.postimg.cc/zBqxkfwg/image.png",
+    "https://i.postimg.cc/Z5rPDS5c/filthyfrank-soup.gif",
+	"https://i.postimg.cc/9XnBDbkz/eyeballduck.jpg",
+    "https://i.postimg.cc/HLzwd950/image.png",
+	"https://i.postimg.cc/4yDtBLCS/Confused-Uwabunga.jpg",
+	"https://i.postimg.cc/5yhvn7d4/ted.png",
+	"https://i.postimg.cc/sDW5vr7r/duckfros.gif",
+	
 ];
 
+/* ===== PICK N RANDOM UNIQUE IMAGES ===== */
+const PICK_COUNT = 5;
+
+const shuffled = [...images].sort(() => Math.random() - 0.5);
+const pickedImages = shuffled.slice(0, PICK_COUNT);
+
+/* ===== BUILD GALLERY ===== */
 const gallery = document.getElementById("gallery");
 let index = 0;
 
-images.forEach((src, i) => {
+pickedImages.forEach((src, i) => {
     const img = document.createElement("img");
     img.src = src;
     if (i === 0) img.classList.add("active");
@@ -285,6 +297,7 @@ images.forEach((src, i) => {
 
 const imgs = gallery.querySelectorAll("img");
 
+/* ===== CYCLE ===== */
 setInterval(() => {
     imgs[index].classList.remove("active");
     index = (index + 1) % imgs.length;
