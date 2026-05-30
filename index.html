@@ -3,260 +3,360 @@
 <head>
 <meta charset="UTF-8">
 <title>Smoothbrain TTT</title>
-
 <style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: black;
+    width: 100%; height: 100%;
+    background: #000;
     overflow: hidden;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
 }
 
-/* ===== CRT SHELL ===== */
+/* ============ CRT SHELL ============ */
 .crt {
     position: relative;
-    width: 100%;
-    height: 100%;
-    animation: crt-flicker 0.12s infinite;
+    width: 100%; height: 100%;
+    animation: flicker 0.14s infinite;
 }
 
-.crt-inner {
-    width: 100%;
-    height: 100%;
-    transform: perspective(1200px) scale(1.04) rotateX(0.4deg) rotateY(-0.4deg);
-    filter: contrast(1.2) brightness(1.1);
-}
-
-/* ===== SCANLINES ===== */
+/* scanlines */
 .crt::before {
     content: "";
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: repeating-linear-gradient(
         to bottom,
-        rgba(0,255,120,0.04),
-        rgba(0,255,120,0.04) 1px,
-        rgba(0,0,0,0) 3px
+        rgba(0,255,120,0.03) 0px,
+        rgba(0,255,120,0.03) 1px,
+        transparent 2px,
+        transparent 4px
     );
-    z-index: 5;
-    pointer-events: none;
+    z-index: 10; pointer-events: none;
 }
 
-/* ===== RGB PHOSPHOR MASK ===== */
+/* phosphor mask */
 .crt::after {
     content: "";
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: repeating-linear-gradient(
         to right,
-        rgba(255,0,0,0.04) 0px,
-        rgba(0,255,0,0.04) 1px,
-        rgba(0,0,255,0.04) 2px,
-        rgba(0,0,0,0) 3px
+        rgba(255,0,0,0.03) 0px,
+        rgba(0,255,0,0.03) 1px,
+        rgba(0,0,255,0.03) 2px,
+        transparent 3px
     );
     mix-blend-mode: screen;
-    z-index: 6;
-    pointer-events: none;
+    z-index: 11; pointer-events: none;
 }
 
-/* ===== SYNC BAR ===== */
-.sync {
-    position: absolute;
-    width: 100%;
-    height: 10%;
-    background: linear-gradient(
-        to bottom,
-        rgba(0,255,100,0),
-        rgba(0,255,100,0.15),
-        rgba(0,255,100,0)
-    );
-    animation: sync-roll 6s linear infinite;
-    z-index: 4;
-    pointer-events: none;
-}
-
-/* ===== VIGNETTE ===== */
+/* vignette */
 .vignette {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-        ellipse at center,
-        rgba(0,0,0,0) 55%,
-        rgba(0,0,0,0.55) 100%
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center,
+        transparent 45%,
+        rgba(0,0,0,0.7) 100%
     );
-    z-index: 7;
+    z-index: 12; pointer-events: none;
+}
+
+/* sync bar */
+.sync {
+    position: absolute; width: 100%; height: 12%;
+    background: linear-gradient(to bottom,
+        transparent,
+        rgba(0,255,100,0.12),
+        transparent
+    );
+    animation: sync-roll 7s linear infinite;
+    z-index: 9; pointer-events: none;
+}
+
+/* ============ SCROLLING COLLAGE ============ */
+.collage {
+    position: absolute; inset: 0;
+    overflow: hidden;
+    display: flex;
+    gap: 0;
+}
+
+/* Each column scrolls at a slightly different speed */
+.col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 3px;
+    will-change: transform;
+}
+
+.col:nth-child(1) { animation: scroll-up 28s linear infinite; }
+.col:nth-child(2) { animation: scroll-up 22s linear infinite; animation-delay: -6s; }
+.col:nth-child(3) { animation: scroll-up 32s linear infinite; animation-delay: -14s; }
+.col:nth-child(4) { animation: scroll-up 25s linear infinite; animation-delay: -3s; }
+.col:nth-child(5) { animation: scroll-up 20s linear infinite; animation-delay: -10s; }
+
+.col img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    border: 1px solid rgba(0,255,100,0.15);
+    filter: brightness(0.55) saturate(0.7) sepia(0.3) hue-rotate(80deg);
+    transition: filter 0.3s;
+}
+
+/* tint overlay to keep everything greenish */
+.collage-tint {
+    position: absolute; inset: 0;
+    background: rgba(0, 20, 5, 0.45);
+    z-index: 2;
     pointer-events: none;
 }
 
-/* ===== LAYOUT ===== */
-.container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    filter: blur(0.4px);
+/* ============ MAIN UI LAYER ============ */
+.ui {
+    position: absolute; inset: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
 }
 
-/* ===== HEADER LOGO ===== */
-.header {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
+/* ============ LOGO CARD ============ */
+.logo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 40px 20px;
+    background: rgba(0, 0, 0, 0.62);
+    border: 2px solid #00ff66;
+    box-shadow:
+        0 0 18px #00ff66,
+        inset 0 0 24px rgba(0,255,100,0.08);
+    backdrop-filter: blur(2px);
 }
 
-.header svg {
-    width: 26vmin;
+.logo-card svg {
+    width: clamp(100px, 18vmin, 200px);
+    height: auto;
 }
 
-.title {
-    margin-top: 8px;
-    font-size: 2rem;
-    font-family: "Comic Sans MS", "Comic Sans", cursive;
-    color: #00ff66;
-    letter-spacing: 0.2em;
-    text-shadow:
-        0 0 6px #00ff66,
-        0 0 20px #00ff66;
-}
-
-/* ===== BRAIN ===== */
 .brain-path {
     fill: none;
     stroke: #00ff66;
     stroke-width: 3;
     filter:
         drop-shadow(0 0 6px #00ff66)
-        drop-shadow(0 0 16px #00ff66)
-        blur(0.3px);
+        drop-shadow(0 0 18px #00ff66);
 }
 
-.header .brain-path {
-    stroke-width: 2;
+.title {
+    font-size: clamp(1.4rem, 3vmin, 2.2rem);
+    color: #00ff66;
+    letter-spacing: 0.22em;
+    text-shadow: 0 0 6px #00ff66, 0 0 22px #00ff66;
+    white-space: nowrap;
 }
 
-/* ===== IMAGE GALLERY ===== */
-.gallery {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60vmin;
-    height: 34vmin;
-    max-width: 800px;
-    max-height: 450px;
+.subtitle {
+    font-size: clamp(0.65rem, 1.4vmin, 0.9rem);
+    color: rgba(0,255,100,0.55);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-shadow: 0 0 4px #00ff66;
+}
+
+/* ============ BOTTOM PANELS ============ */
+.panels {
+    display: flex;
+    gap: 16px;
+    width: clamp(500px, 72vmin, 960px);
+    max-width: 95vw;
+}
+
+/* ============ INFO BOX ============ */
+.info-box {
+    flex: 1;
+    padding: 14px 18px;
+    background: rgba(0,0,0,0.62);
     border: 2px solid #00ff66;
-    box-shadow:
-        0 0 20px #00ff66,
-        inset 0 0 20px #00ff66;
-    overflow: hidden;
+    box-shadow: 0 0 12px #00ff66, inset 0 0 12px rgba(0,255,100,0.07);
+    backdrop-filter: blur(2px);
+    color: #00ff66;
+    font-size: clamp(0.7rem, 1.5vmin, 0.95rem);
+    text-shadow: 0 0 5px #00ff66;
+    line-height: 1.6;
+    text-align: center;
 }
 
-.gallery img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    opacity: 0;
-    transition: opacity 1.2s ease-in-out;
-    filter: drop-shadow(0 0 10px #00ff66) blur(0.2px);
+/* ============ CHANGELOG BOX ============ */
+.changelog {
+    flex: 1.4;
+    padding: 14px 18px;
+    background: rgba(0,0,0,0.62);
+    border: 2px solid #00ff66;
+    box-shadow: 0 0 12px #00ff66, inset 0 0 12px rgba(0,255,100,0.07);
+    backdrop-filter: blur(2px);
+    color: #00ff66;
+    text-shadow: 0 0 5px #00ff66;
+    font-size: clamp(0.68rem, 1.4vmin, 0.9rem);
+    line-height: 1.65;
+    max-height: 28vmin;
+    overflow-y: auto;
 }
 
-.gallery img.active {
-    opacity: 1;
+.changelog::-webkit-scrollbar { width: 6px; }
+.changelog::-webkit-scrollbar-track { background: rgba(0,255,100,0.05); }
+.changelog::-webkit-scrollbar-thumb { background: rgba(0,255,100,0.4); border-radius: 3px; }
+
+.changelog-title {
+    font-size: clamp(0.75rem, 1.6vmin, 1rem);
+    letter-spacing: 0.2em;
+    color: #00ff66;
+    text-shadow: 0 0 8px #00ff66, 0 0 20px #00ff66;
+    border-bottom: 1px solid rgba(0,255,100,0.35);
+    padding-bottom: 6px;
+    margin-bottom: 10px;
 }
 
-/* ===== ANIMATIONS ===== */
-@keyframes crt-flicker {
-    0% { opacity: 1; }
-    50% { opacity: 0.97; }
+.changelog-entry {
+    margin-bottom: 10px;
+}
+
+.changelog-date {
+    color: rgba(0,255,100,0.6);
+    font-size: 0.8em;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+}
+
+.changelog-entry ul {
+    list-style: none;
+    padding: 0;
+}
+
+.changelog-entry ul li::before {
+    content: "› ";
+    color: rgba(0,255,100,0.6);
+}
+
+/* ============ ANIMATIONS ============ */
+@keyframes flicker {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.975; }
     100% { opacity: 1; }
 }
 
 @keyframes sync-roll {
-    0% { top: -20%; }
-    100% { top: 120%; }
+    0%   { top: -15%; }
+    100% { top: 115%; }
 }
 
-/* ===== TEXT INFO BOX ===== */
-.info-box {
-    position: absolute;
-    top: calc(50% + 20vmin);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60vmin;
-    max-width: 800px;
-    padding: 14px 18px;
-    font-family: "Comic Sans MS", "Comic Sans", cursive;
-    font-size: 1.3rem;
-    color: #00ff66;
-    text-align: center;
-
-    border: 2px solid #00ff66;
-    box-shadow:
-        0 0 12px #00ff66,
-        inset 0 0 12px #00ff66;
-
-    background: rgba(0, 0, 0, 0.6);
-    text-shadow: 0 0 6px #00ff66;
+@keyframes scroll-up {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
 }
 
 </style>
 </head>
-
 <body>
+
 <div class="crt">
     <div class="sync"></div>
-    <div class="crt-inner">
-        <div class="container">
 
-<!-- ===== HEADER ===== -->
-<div class="header">
-<svg viewBox="0 0 400 300">
-    <!-- Outline -->
-    <path class="brain-path" d="
-        M80,160 C40,140 40,80 90,70
-        C110,20 190,20 200,60
-        C230,20 310,30 320,80
-        C360,90 360,150 320,160
-        C330,200 300,230 260,220
-        C240,260 160,260 140,220
-        C100,240 70,210 80,160 Z"/>
+    <!-- SCROLLING IMAGE COLLAGE -->
+    <div class="collage" id="collage"></div>
+    <div class="collage-tint"></div>
 
-    <!-- Left folds -->
-    <path class="brain-path" d="M110 90 C90 110 100 140 120 150"/>
-    <path class="brain-path" d="M120 70 C140 90 130 120 150 140"/>
-    <path class="brain-path" d="M100 130 C120 160 110 190 140 200"/>
+    <!-- MAIN UI -->
+    <div class="ui">
 
-    <!-- Right folds -->
-    <path class="brain-path" d="M290 90 C310 110 300 140 280 150"/>
-    <path class="brain-path" d="M280 70 C260 90 270 120 250 140"/>
-    <path class="brain-path" d="M300 130 C280 160 290 190 260 200"/>
+        <!-- LOGO -->
+        <div class="logo-card">
+            <svg viewBox="0 0 400 300">
+                <path class="brain-path" d="
+                    M80,160 C40,140 40,80 90,70
+                    C110,20 190,20 200,60
+                    C230,20 310,30 320,80
+                    C360,90 360,150 320,160
+                    C330,200 300,230 260,220
+                    C240,260 160,260 140,220
+                    C100,240 70,210 80,160 Z"/>
+                <path class="brain-path" d="M110 90 C90 110 100 140 120 150"/>
+                <path class="brain-path" d="M120 70 C140 90 130 120 150 140"/>
+                <path class="brain-path" d="M100 130 C120 160 110 190 140 200"/>
+                <path class="brain-path" d="M290 90 C310 110 300 140 280 150"/>
+                <path class="brain-path" d="M280 70 C260 90 270 120 250 140"/>
+                <path class="brain-path" d="M300 130 C280 160 290 190 260 200"/>
+                <path class="brain-path" d="M200 60 C190 110 190 170 200 220"/>
+            </svg>
+            <div class="title">Smoothbrain</div>
+            <div class="subtitle">TTT &nbsp;·&nbsp; Loading Server</div>
+        </div>
 
-    <!-- Center seam -->
-    <path class="brain-path" d="M200 60 C190 110 190 170 200 220"/>
-</svg>
-<div class="title">Smoothbrain</div>
-</div>
+        <!-- BOTTOM PANELS -->
+        <div class="panels">
 
-<!-- ===== GALLERY ===== -->
-<div class="gallery" id="gallery"></div>
+            <!-- INFO -->
+            <div class="info-box">
+                You are now joining Smoothbrain.<br>
+                Your IQ score has been lowered.<br>
+                Do not resist.
+                <br><br>
+                We try not to make the<br>downloads too abysmal.
+            </div>
+
+            <!-- CHANGELOG -->
+            <div class="changelog">
+                <div class="changelog-title">▌ SERVER CHANGES</div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">2025-07-12</div>
+                    <ul>
+                        <li>Added new map rotation</li>
+                        <li>Fixed traitor credit exploit on ttt_casino</li>
+                        <li>Buffed Detective equipment shop</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">2025-07-05</div>
+                    <ul>
+                        <li>New custom weapon: The Brainblaster</li>
+                        <li>Karma floor lowered to 750</li>
+                        <li>RDM manager now logs body reports</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">2025-06-28</div>
+                    <ul>
+                        <li>Lag spikes should be gone (famous last words)</li>
+                        <li>Updated ULX to latest build</li>
+                        <li>Prop surf zone added to ttt_rooftops</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">2025-06-15</div>
+                    <ul>
+                        <li>Server wipe — fresh karma for everyone</li>
+                        <li>Motd finally updated (yes really)</li>
+                    </ul>
+                </div>
+            </div>
 
         </div>
     </div>
+
     <div class="vignette"></div>
 </div>
 
-<div class="info-box">
-    You are now joining Smoothbrain. Your IQ score has been lowered. Do not resist.
-<br><br>
-	We try not to make the downloads too abysmal.
-</div>
-
 <script>
-/* ===== IMAGE URLS (FULL POOL) ===== */
 const images = [
     "https://i.postimg.cc/52MNpcrK/generic-512.png",
     "https://i.postimg.cc/wBjtc8yq/image.png",
@@ -270,57 +370,64 @@ const images = [
     "https://i.postimg.cc/pLncW4XF/terrydavis-smile.gif",
     "https://i.postimg.cc/zBqxkfwg/image.png",
     "https://i.postimg.cc/Z5rPDS5c/filthyfrank-soup.gif",
-	"https://i.postimg.cc/9XnBDbkz/eyeballduck.jpg",
+    "https://i.postimg.cc/9XnBDbkz/eyeballduck.jpg",
     "https://i.postimg.cc/HLzwd950/image.png",
-	"https://i.postimg.cc/4yDtBLCS/Confused-Uwabunga.jpg",
-	"https://i.postimg.cc/5yhvn7d4/ted.png",
-	"https://i.postimg.cc/sDW5vr7r/duckfros.gif",
-	"https://i.postimg.cc/Hk4vKKYQ/image.png",
-	"https://i.postimg.cc/Y0YzFGjF/shakingcat.gif",
-	"https://i.postimg.cc/1zm7ZH4Z/image.png",
-	"https://i.postimg.cc/nVDkg5TB/image.png",
-	"https://i.postimg.cc/1zm7ZH4Z/image.png",
-	"https://i.postimg.cc/TPdNX9hR/image.png",
-	"https://i.postimg.cc/G29M4mkZ/image.png",
-	"https://i.postimg.cc/mDqmCWjf/image.png",
-	"https://i.postimg.cc/59LBnzNg/334403.png",
-	"https://i.postimg.cc/bwN1yF02/decoy-spray2.png",
-	"https://i.postimg.cc/L4tPzMNC/bingosandbeltdance.gif",
-	"https://i.postimg.cc/Z5Rytv4k/duck-ducks.gif",
-	"https://i.postimg.cc/5tQYjcXw/team-fortress-2-i-have-no-idea.gif",
-	"https://i.postimg.cc/R0J6qrWg/eyeschickenkievheavy.png",
-	"https://i.postimg.cc/FzN7P7DP/gooose-goose-revolution-goose.gif",
-	"https://i.postimg.cc/jq4WD4Sh/image.png",
-	"https://i.postimg.cc/X7NrdBZ6/image.png",
-	"https://i.postimg.cc/Px3wbbsD/cat-milk.gif",
-	
+    "https://i.postimg.cc/4yDtBLCS/Confused-Uwabunga.jpg",
+    "https://i.postimg.cc/5yhvn7d4/ted.png",
+    "https://i.postimg.cc/sDW5vr7r/duckfros.gif",
+    "https://i.postimg.cc/Hk4vKKYQ/image.png",
+    "https://i.postimg.cc/Y0YzFGjF/shakingcat.gif",
+    "https://i.postimg.cc/1zm7ZH4Z/image.png",
+    "https://i.postimg.cc/nVDkg5TB/image.png",
+    "https://i.postimg.cc/TPdNX9hR/image.png",
+    "https://i.postimg.cc/G29M4mkZ/image.png",
+    "https://i.postimg.cc/mDqmCWjf/image.png",
+    "https://i.postimg.cc/59LBnzNg/334403.png",
+    "https://i.postimg.cc/bwN1yF02/decoy-spray2.png",
+    "https://i.postimg.cc/L4tPzMNC/bingosandbeltdance.gif",
+    "https://i.postimg.cc/Z5Rytv4k/duck-ducks.gif",
+    "https://i.postimg.cc/5tQYjcXw/team-fortress-2-i-have-no-idea.gif",
+    "https://i.postimg.cc/R0J6qrWg/eyeschickenkievheavy.png",
+    "https://i.postimg.cc/FzN7P7DP/gooose-goose-revolution-goose.gif",
+    "https://i.postimg.cc/jq4WD4Sh/image.png",
+    "https://i.postimg.cc/X7NrdBZ6/image.png",
+    "https://i.postimg.cc/Px3wbbsD/cat-milk.gif",
 ];
 
-/* ===== PICK N RANDOM UNIQUE IMAGES ===== */
-const PICK_COUNT = 5;
+const NUM_COLS = 5;
+const PER_COL = 10; // images per column (doubled for seamless loop)
 
-const shuffled = [...images].sort(() => Math.random() - 0.5);
-const pickedImages = shuffled.slice(0, PICK_COUNT);
+const collage = document.getElementById("collage");
 
-/* ===== BUILD GALLERY ===== */
-const gallery = document.getElementById("gallery");
-let index = 0;
+// Shuffle helper
+function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
 
-pickedImages.forEach((src, i) => {
-    const img = document.createElement("img");
-    img.src = src;
-    if (i === 0) img.classList.add("active");
-    gallery.appendChild(img);
-});
+for (let c = 0; c < NUM_COLS; c++) {
+    const col = document.createElement("div");
+    col.className = "col";
 
-const imgs = gallery.querySelectorAll("img");
+    // pick a shuffled subset for this column, doubled for seamless loop
+    const pool = shuffle(images);
+    const half = pool.slice(0, PER_COL);
+    const full = [...half, ...half]; // seamless loop
 
-/* ===== CYCLE ===== */
-setInterval(() => {
-    imgs[index].classList.remove("active");
-    index = (index + 1) % imgs.length;
-    imgs[index].classList.add("active");
-}, 3000);
+    full.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.loading = "lazy";
+        col.appendChild(img);
+    });
+
+    collage.appendChild(col);
+}
 </script>
+
 </body>
 </html>
