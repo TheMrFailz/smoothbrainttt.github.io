@@ -8,7 +8,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
-    width: 100%; height: 100%;
+    width: 800px; height: 600px;
     background: #000;
     overflow: hidden;
     font-family: "Comic Sans MS", "Comic Sans", cursive;
@@ -17,7 +17,7 @@ html, body {
 /* ============ CRT SHELL ============ */
 .crt {
     position: relative;
-    width: 100%; height: 100%;
+    width: 800px; height: 600px;
     animation: flicker 0.14s infinite;
 }
 
@@ -62,7 +62,7 @@ html, body {
 
 /* sync bar */
 .sync {
-    position: absolute; width: 100%; height: 12%;
+    position: absolute; width: 800px; height: 72px;
     background: linear-gradient(to bottom,
         transparent,
         rgba(0,255,100,0.12),
@@ -74,15 +74,15 @@ html, body {
 
 /* ============ SCROLLING COLLAGE ============ */
 .collage {
-    position: absolute; inset: 0;
+    position: absolute;
+    top: 0; left: 0;
+    width: 800px; height: 600px;
     overflow: hidden;
     display: flex;
-    gap: 0;
 }
 
-/* Each column scrolls at a slightly different speed */
 .col {
-    flex: 1;
+    width: 160px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -97,18 +97,18 @@ html, body {
 .col:nth-child(5) { animation: scroll-up 20s linear infinite; animation-delay: -10s; }
 
 .col img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
+    width: 154px;
+    height: 154px;
     object-fit: cover;
     display: block;
     border: 1px solid rgba(0,255,100,0.15);
     filter: brightness(0.55) saturate(0.7) sepia(0.3) hue-rotate(80deg);
-    transition: filter 0.3s;
 }
 
-/* tint overlay to keep everything greenish */
 .collage-tint {
-    position: absolute; inset: 0;
+    position: absolute;
+    top: 0; left: 0;
+    width: 800px; height: 600px;
     background: rgba(0, 20, 5, 0.45);
     z-index: 2;
     pointer-events: none;
@@ -116,13 +116,15 @@ html, body {
 
 /* ============ MAIN UI LAYER ============ */
 .ui {
-    position: absolute; inset: 0;
+    position: absolute;
+    top: 0; left: 0;
+    width: 800px; height: 600px;
     z-index: 5;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 22px;
+    gap: 20px;
 }
 
 /* ============ LOGO CARD ============ */
@@ -130,9 +132,9 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 24px 40px 20px;
-    background: rgba(0, 0, 0, 0.62);
+    gap: 8px;
+    padding: 18px 36px 16px;
+    background: rgba(0, 0, 0, 0.65);
     border: 2px solid #00ff66;
     box-shadow:
         0 0 18px #00ff66,
@@ -141,8 +143,8 @@ html, body {
 }
 
 .logo-card svg {
-    width: clamp(100px, 18vmin, 200px);
-    height: auto;
+    width: 120px;
+    height: 90px;
 }
 
 .brain-path {
@@ -155,7 +157,7 @@ html, body {
 }
 
 .title {
-    font-size: clamp(1.4rem, 3vmin, 2.2rem);
+    font-size: 1.7rem;
     color: #00ff66;
     letter-spacing: 0.22em;
     text-shadow: 0 0 6px #00ff66, 0 0 22px #00ff66;
@@ -163,7 +165,7 @@ html, body {
 }
 
 .subtitle {
-    font-size: clamp(0.65rem, 1.4vmin, 0.9rem);
+    font-size: 0.72rem;
     color: rgba(0,255,100,0.55);
     letter-spacing: 0.3em;
     text-transform: uppercase;
@@ -173,21 +175,21 @@ html, body {
 /* ============ BOTTOM PANELS ============ */
 .panels {
     display: flex;
-    gap: 16px;
-    width: clamp(500px, 72vmin, 960px);
-    max-width: 95vw;
+    gap: 14px;
+    width: 680px;
 }
 
 /* ============ INFO BOX ============ */
 .info-box {
-    flex: 1;
-    padding: 14px 18px;
-    background: rgba(0,0,0,0.62);
+    width: 220px;
+    flex-shrink: 0;
+    padding: 12px 14px;
+    background: rgba(0,0,0,0.65);
     border: 2px solid #00ff66;
     box-shadow: 0 0 12px #00ff66, inset 0 0 12px rgba(0,255,100,0.07);
     backdrop-filter: blur(2px);
     color: #00ff66;
-    font-size: clamp(0.7rem, 1.5vmin, 0.95rem);
+    font-size: 0.78rem;
     text-shadow: 0 0 5px #00ff66;
     line-height: 1.6;
     text-align: center;
@@ -195,17 +197,17 @@ html, body {
 
 /* ============ CHANGELOG BOX ============ */
 .changelog {
-    flex: 1.4;
-    padding: 14px 18px;
-    background: rgba(0,0,0,0.62);
+    flex: 1;
+    padding: 12px 14px;
+    background: rgba(0,0,0,0.65);
     border: 2px solid #00ff66;
     box-shadow: 0 0 12px #00ff66, inset 0 0 12px rgba(0,255,100,0.07);
     backdrop-filter: blur(2px);
     color: #00ff66;
     text-shadow: 0 0 5px #00ff66;
-    font-size: clamp(0.68rem, 1.4vmin, 0.9rem);
-    line-height: 1.65;
-    max-height: 28vmin;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    max-height: 180px;
     overflow-y: auto;
 }
 
@@ -214,35 +216,26 @@ html, body {
 .changelog::-webkit-scrollbar-thumb { background: rgba(0,255,100,0.4); border-radius: 3px; }
 
 .changelog-title {
-    font-size: clamp(0.75rem, 1.6vmin, 1rem);
+    font-size: 0.85rem;
     letter-spacing: 0.2em;
     color: #00ff66;
     text-shadow: 0 0 8px #00ff66, 0 0 20px #00ff66;
     border-bottom: 1px solid rgba(0,255,100,0.35);
-    padding-bottom: 6px;
-    margin-bottom: 10px;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
 }
 
-.changelog-entry {
-    margin-bottom: 10px;
-}
+.changelog-entry { margin-bottom: 8px; }
 
 .changelog-date {
     color: rgba(0,255,100,0.6);
-    font-size: 0.8em;
+    font-size: 0.75em;
     letter-spacing: 0.1em;
     margin-bottom: 2px;
 }
 
-.changelog-entry ul {
-    list-style: none;
-    padding: 0;
-}
-
-.changelog-entry ul li::before {
-    content: "› ";
-    color: rgba(0,255,100,0.6);
-}
+.changelog-entry ul { list-style: none; padding: 0; }
+.changelog-entry ul li::before { content: "› "; color: rgba(0,255,100,0.6); }
 
 /* ============ ANIMATIONS ============ */
 @keyframes flicker {
@@ -268,14 +261,11 @@ html, body {
 <div class="crt">
     <div class="sync"></div>
 
-    <!-- SCROLLING IMAGE COLLAGE -->
     <div class="collage" id="collage"></div>
     <div class="collage-tint"></div>
 
-    <!-- MAIN UI -->
     <div class="ui">
 
-        <!-- LOGO -->
         <div class="logo-card">
             <svg viewBox="0 0 400 300">
                 <path class="brain-path" d="
@@ -298,10 +288,8 @@ html, body {
             <div class="subtitle">TTT &nbsp;·&nbsp; Loading Server</div>
         </div>
 
-        <!-- BOTTOM PANELS -->
         <div class="panels">
 
-            <!-- INFO -->
             <div class="info-box">
                 You are now joining Smoothbrain.<br>
                 Your IQ score has been lowered.<br>
@@ -310,10 +298,8 @@ html, body {
                 We try not to make the<br>downloads too abysmal.
             </div>
 
-            <!-- CHANGELOG -->
             <div class="changelog">
                 <div class="changelog-title">▌ SERVER CHANGES</div>
-
                 <div class="changelog-entry">
                     <div class="changelog-date">2026-05-30</div>
                     <ul>
@@ -369,11 +355,10 @@ const images = [
 ];
 
 const NUM_COLS = 5;
-const PER_COL = 10; // images per column (doubled for seamless loop)
+const PER_COL = 10;
 
 const collage = document.getElementById("collage");
 
-// Shuffle helper
 function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -386,19 +371,15 @@ function shuffle(arr) {
 for (let c = 0; c < NUM_COLS; c++) {
     const col = document.createElement("div");
     col.className = "col";
-
-    // pick a shuffled subset for this column, doubled for seamless loop
     const pool = shuffle(images);
     const half = pool.slice(0, PER_COL);
-    const full = [...half, ...half]; // seamless loop
-
+    const full = [...half, ...half];
     full.forEach(src => {
         const img = document.createElement("img");
         img.src = src;
         img.loading = "lazy";
         col.appendChild(img);
     });
-
     collage.appendChild(col);
 }
 </script>
