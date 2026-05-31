@@ -8,7 +8,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
-    width: 800px; height: 600px;
+    width: 100vw; height: 100vh;
     background: #000;
     overflow: hidden;
     font-family: "Comic Sans MS", "Comic Sans", cursive;
@@ -16,8 +16,9 @@ html, body {
 
 /* ============ CRT SHELL ============ */
 .crt {
-    position: relative;
-    width: 800px; height: 600px;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     animation: flicker 0.14s infinite;
 }
 
@@ -62,7 +63,7 @@ html, body {
 
 /* sync bar */
 .sync {
-    position: absolute; width: 800px; height: 72px;
+    position: absolute; width: 100%; height: 12%;
     background: linear-gradient(to bottom,
         transparent,
         rgba(0,255,100,0.12),
@@ -75,14 +76,13 @@ html, body {
 /* ============ SCROLLING COLLAGE ============ */
 .collage {
     position: absolute;
-    top: 0; left: 0;
-    width: 800px; height: 600px;
+    top: 0; left: 0; right: 0; bottom: 0;
     overflow: hidden;
     display: flex;
 }
 
 .col {
-    width: 160px;
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -97,8 +97,8 @@ html, body {
 .col:nth-child(5) { animation: scroll-up 20s linear infinite; animation-delay: -10s; }
 
 .col img {
-    width: 154px;
-    height: 154px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     display: block;
     border: 1px solid rgba(0,255,100,0.15);
@@ -106,9 +106,7 @@ html, body {
 }
 
 .collage-tint {
-    position: absolute;
-    top: 0; left: 0;
-    width: 800px; height: 600px;
+    position: absolute; inset: 0;
     background: rgba(0, 20, 5, 0.45);
     z-index: 2;
     pointer-events: none;
@@ -116,15 +114,16 @@ html, body {
 
 /* ============ MAIN UI LAYER ============ */
 .ui {
-    position: absolute;
-    top: 0; left: 0;
-    width: 800px; height: 600px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 5;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: 20px;
+    width: max-content;
 }
 
 /* ============ LOGO CARD ============ */
@@ -133,7 +132,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 18px 36px 16px;
+    padding: 20px 36px 16px;
     background: rgba(0, 0, 0, 0.65);
     border: 2px solid #00ff66;
     box-shadow:
@@ -143,8 +142,8 @@ html, body {
 }
 
 .logo-card svg {
-    width: 120px;
-    height: 90px;
+    width: clamp(90px, 15vw, 160px);
+    height: auto;
 }
 
 .brain-path {
@@ -157,7 +156,7 @@ html, body {
 }
 
 .title {
-    font-size: 1.7rem;
+    font-size: clamp(1.3rem, 2.8vw, 2rem);
     color: #00ff66;
     letter-spacing: 0.22em;
     text-shadow: 0 0 6px #00ff66, 0 0 22px #00ff66;
@@ -165,7 +164,7 @@ html, body {
 }
 
 .subtitle {
-    font-size: 0.72rem;
+    font-size: clamp(0.6rem, 1.2vw, 0.85rem);
     color: rgba(0,255,100,0.55);
     letter-spacing: 0.3em;
     text-transform: uppercase;
@@ -176,20 +175,19 @@ html, body {
 .panels {
     display: flex;
     gap: 14px;
-    width: 680px;
+    width: clamp(420px, 70vw, 860px);
 }
 
 /* ============ INFO BOX ============ */
 .info-box {
-    width: 220px;
-    flex-shrink: 0;
-    padding: 12px 14px;
+    flex: 1;
+    padding: 12px 16px;
     background: rgba(0,0,0,0.65);
     border: 2px solid #00ff66;
     box-shadow: 0 0 12px #00ff66, inset 0 0 12px rgba(0,255,100,0.07);
     backdrop-filter: blur(2px);
     color: #00ff66;
-    font-size: 0.78rem;
+    font-size: clamp(0.68rem, 1.3vw, 0.9rem);
     text-shadow: 0 0 5px #00ff66;
     line-height: 1.6;
     text-align: center;
@@ -197,17 +195,17 @@ html, body {
 
 /* ============ CHANGELOG BOX ============ */
 .changelog {
-    flex: 1;
-    padding: 12px 14px;
+    flex: 1.5;
+    padding: 12px 16px;
     background: rgba(0,0,0,0.65);
     border: 2px solid #00ff66;
     box-shadow: 0 0 12px #00ff66, inset 0 0 12px rgba(0,255,100,0.07);
     backdrop-filter: blur(2px);
     color: #00ff66;
     text-shadow: 0 0 5px #00ff66;
-    font-size: 0.78rem;
+    font-size: clamp(0.68rem, 1.3vw, 0.9rem);
     line-height: 1.6;
-    max-height: 180px;
+    max-height: 26vh;
     overflow-y: auto;
 }
 
@@ -216,7 +214,7 @@ html, body {
 .changelog::-webkit-scrollbar-thumb { background: rgba(0,255,100,0.4); border-radius: 3px; }
 
 .changelog-title {
-    font-size: 0.85rem;
+    font-size: clamp(0.72rem, 1.4vw, 0.95rem);
     letter-spacing: 0.2em;
     color: #00ff66;
     text-shadow: 0 0 8px #00ff66, 0 0 20px #00ff66;
@@ -229,7 +227,7 @@ html, body {
 
 .changelog-date {
     color: rgba(0,255,100,0.6);
-    font-size: 0.75em;
+    font-size: 0.8em;
     letter-spacing: 0.1em;
     margin-bottom: 2px;
 }
@@ -260,60 +258,58 @@ html, body {
 
 <div class="crt">
     <div class="sync"></div>
-
     <div class="collage" id="collage"></div>
     <div class="collage-tint"></div>
+    <div class="vignette"></div>
+</div>
 
-    <div class="ui">
+<div class="ui">
 
-        <div class="logo-card">
-            <svg viewBox="0 0 400 300">
-                <path class="brain-path" d="
-                    M80,160 C40,140 40,80 90,70
-                    C110,20 190,20 200,60
-                    C230,20 310,30 320,80
-                    C360,90 360,150 320,160
-                    C330,200 300,230 260,220
-                    C240,260 160,260 140,220
-                    C100,240 70,210 80,160 Z"/>
-                <path class="brain-path" d="M110 90 C90 110 100 140 120 150"/>
-                <path class="brain-path" d="M120 70 C140 90 130 120 150 140"/>
-                <path class="brain-path" d="M100 130 C120 160 110 190 140 200"/>
-                <path class="brain-path" d="M290 90 C310 110 300 140 280 150"/>
-                <path class="brain-path" d="M280 70 C260 90 270 120 250 140"/>
-                <path class="brain-path" d="M300 130 C280 160 290 190 260 200"/>
-                <path class="brain-path" d="M200 60 C190 110 190 170 200 220"/>
-            </svg>
-            <div class="title">Smoothbrain</div>
-            <div class="subtitle">TTT &nbsp;·&nbsp; Loading Server</div>
-        </div>
-
-        <div class="panels">
-
-            <div class="info-box">
-                You are now joining Smoothbrain.<br>
-                Your IQ score has been lowered.<br>
-                Do not resist.
-                <br><br>
-                We try not to make the<br>downloads too abysmal.
-            </div>
-
-            <div class="changelog">
-                <div class="changelog-title">▌ SERVER CHANGES</div>
-                <div class="changelog-entry">
-                    <div class="changelog-date">2026-05-30</div>
-                    <ul>
-                        <li>Added new maps.</li>
-                        <li>Added new guns.</li>
-                        <li>Another pass at trying to fix the gun sound precache issue.</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
+    <div class="logo-card">
+        <svg viewBox="0 0 400 300">
+            <path class="brain-path" d="
+                M80,160 C40,140 40,80 90,70
+                C110,20 190,20 200,60
+                C230,20 310,30 320,80
+                C360,90 360,150 320,160
+                C330,200 300,230 260,220
+                C240,260 160,260 140,220
+                C100,240 70,210 80,160 Z"/>
+            <path class="brain-path" d="M110 90 C90 110 100 140 120 150"/>
+            <path class="brain-path" d="M120 70 C140 90 130 120 150 140"/>
+            <path class="brain-path" d="M100 130 C120 160 110 190 140 200"/>
+            <path class="brain-path" d="M290 90 C310 110 300 140 280 150"/>
+            <path class="brain-path" d="M280 70 C260 90 270 120 250 140"/>
+            <path class="brain-path" d="M300 130 C280 160 290 190 260 200"/>
+            <path class="brain-path" d="M200 60 C190 110 190 170 200 220"/>
+        </svg>
+        <div class="title">Smoothbrain</div>
+        <div class="subtitle">TTT &nbsp;·&nbsp; Loading Server</div>
     </div>
 
-    <div class="vignette"></div>
+    <div class="panels">
+
+        <div class="info-box">
+            You are now joining Smoothbrain.<br>
+            Your IQ score has been lowered.<br>
+            Do not resist.
+            <br><br>
+            We try not to make the<br>downloads too abysmal.
+        </div>
+
+        <div class="changelog">
+            <div class="changelog-title">▌ SERVER CHANGES</div>
+            <div class="changelog-entry">
+                <div class="changelog-date">2026-05-30</div>
+                <ul>
+                    <li>Added new maps.</li>
+                    <li>Added new guns.</li>
+                    <li>Another pass at trying to fix the gun sound precache issue.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <script>
